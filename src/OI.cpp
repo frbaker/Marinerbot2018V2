@@ -19,6 +19,7 @@
 #include "Commands/CloseGrabber.h"
 #include "Commands/DriveBackward.h"
 #include "Commands/DriveForward.h"
+#include "Commands/DriveWithJoy.h"
 #include "Commands/LowerElbow.h"
 #include "Commands/LowerElevator.h"
 #include "Commands/OpenGrabber.h"
@@ -46,6 +47,7 @@ OI::OI() {
     climbUpButton1->WhileHeld(new ClimbUp());
 
     // SmartDashboard Buttons
+    frc::SmartDashboard::PutData("Drive With Joy", new DriveWithJoy());
     frc::SmartDashboard::PutData("Drive Backward", new DriveBackward());
     frc::SmartDashboard::PutData("Drive Forward", new DriveForward());
     frc::SmartDashboard::PutData("Reset AHRS", new ResetAHRS());

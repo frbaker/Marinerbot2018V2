@@ -32,6 +32,7 @@ private:
 	
 	
 	std::shared_ptr<frc::Joystick> joystick;
+	std::shared_ptr<frc::JoystickButton> openGrabberButton;
 	std::shared_ptr<frc::JoystickButton> climbDownButton2;
 	std::shared_ptr<frc::JoystickButton> resetAHRS3;
 	std::shared_ptr<frc::JoystickButton> climbUpButton1;
