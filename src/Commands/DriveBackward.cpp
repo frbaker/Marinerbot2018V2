@@ -23,26 +23,26 @@ DriveBackward::DriveBackward(): frc::Command() {
 
 // Called just before this Command runs the first time
 void DriveBackward::Initialize() {
-
+	SetTimeout(1);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveBackward::Execute() {
-
+	Robot::driveBase->DriveBack(0.2);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveBackward::IsFinished() {
-    return false;
+    return IsTimedOut();
 }
 
 // Called once after isFinished returns true
 void DriveBackward::End() {
-
+	Robot::driveBase->Halt();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DriveBackward::Interrupted() {
-
+	End();
 }

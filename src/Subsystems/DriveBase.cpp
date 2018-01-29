@@ -53,10 +53,13 @@ void DriveBase::InitDefaultCommand() {
 	driveTrainLeftTalonSlave->Follow(*driveTrainLeftTalon);
 	driveTrainRightTalonSlave->Follow(*driveTrainRightTalon);
 
-	driveTrainLeftTalon->SetInverted(false);
-	driveTrainRightTalon->SetInverted(false);
-	driveTrainLeftTalonSlave->SetInverted(false);
-	driveTrainRightTalonSlave->SetInverted(false);
+	//Left DriveTrain
+	driveTrainLeftTalon->SetInverted(true);
+	driveTrainLeftTalonSlave->SetInverted(true);
+
+	//Right DriveTrain
+	driveTrainRightTalon->SetInverted(true);
+	driveTrainRightTalonSlave->SetInverted(true);
 
 	driveTrainLeftTalon->SetSensorPhase(true);
 	driveTrainRightTalon->SetSensorPhase(true);
@@ -96,7 +99,7 @@ void DriveBase::Halt(){
 		driveTrain->TankDrive(0.0,0.0);
 }
 void DriveBase::JoyDrive(double myX, double myY){
-	driveTrain->ArcadeDrive(myX, myY)	;
+	driveTrain->ArcadeDrive(myX, myY);
 	//driveTrain->TankDrive(myX,myY);
 }
 

@@ -23,13 +23,13 @@ DriveWithJoy::DriveWithJoy(): frc::Command() {
 
 // Called just before this Command runs the first time
 void DriveWithJoy::Initialize() {
-	SetTimeout(1);
+	//SetTimeout(1);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoy::Execute() {
 
-	Robot::driveBase->JoyDrive(Robot::oi->getJoystick()->GetRawAxis(1), Robot::oi->getJoystick()->GetRawAxis(2));
+	Robot::driveBase->JoyDrive(Robot::oi->getJoystick()->GetRawAxis(1), Robot::oi->getJoystick()->GetRawAxis(0));
 
 //Robot::driveBase->driveTrain->TankDrive(Robot::oi->getJoystick()->GetRawAxis(1), Robot::oi->getJoystick()->GetRawAxis(2));
 
@@ -37,16 +37,16 @@ void DriveWithJoy::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveWithJoy::IsFinished() {
-    return IsTimedOut();
+    return false;
 }
 
 // Called once after isFinished returns true
 void DriveWithJoy::End() {
-	Robot::driveBase->Halt();
+
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DriveWithJoy::Interrupted() {
-	End();
+
 }
