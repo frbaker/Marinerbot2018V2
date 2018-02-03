@@ -47,7 +47,7 @@ void RobotMap::init() {
     
     driveBaseDriveTrainRightTalon.reset(new WPI_TalonSRX(1));
     
-
+    
     driveBaseDriveTrain.reset(new frc::DifferentialDrive(*driveBaseDriveTrainLeftTalon, *driveBaseDriveTrainRightTalon));
     lw->AddActuator("DriveBase", "Drive Train", driveBaseDriveTrain);
     driveBaseDriveTrain->SetSafetyEnabled(true);

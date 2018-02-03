@@ -79,14 +79,69 @@ void DriveBase::resetAhrs(){
 double DriveBase::getCurrentAngle(){
 	return ahrs->GetAngle();
 }
-double DriveBase::distanceToObjectLeft(){
-	double voltage = ultrasonicLeft->GetVoltage();
 
-	//Todo Need to do some calculations to convert analog voltage to distance
-	distanceToLeftObject = voltage * 1.0; //speed of sound etc.
-
-	return distanceToLeftObject;
+double DriveBase::getInchesToObject(){
+	//Todo Need to verify this returns distance to the nearest object in inches.
+	double voltage = ultrasonicLeft->GetAverageVoltage();
+	double dist_mm = voltage/0.977*1000;
+	double dist_in = dist_mm/25.4;
+	//double dist_in = ultrasonicLeft->GetRangeInches();
+	return dist_in;
 }
+
+
+void DriveBase::driveSetDistance(double dist){
+	double destination = getInchesToObject()+dist;
+	Timer t;
+	double startAngle = getCurrentAngle();
+	const double k = 0.01;
+	double angleAdjustment;
+	t.Start();
+	if (dist >= 0){
+		while (getInchesToObject() < destination){
+			angleAdjustment = getCurrentAngle()-startAngle;
+			driveTrain->TankDrive(0.5-k*angleAdjustment,0.5+k*angleAdjustment);
+			if (t.Get() > 7 ){ //Sanity check ... if the command has taken more the 7 seconds something is seriously wrong.
+				break;
+			}
+		}
+	}
+	else {
+		while (getInchesToObject() > destination){
+			angleAdjustment = getCurrentAngle()-startAngle;
+			driveTrain->TankDrive(0.5-k*angleAdjustment,-0.5+k*angleAdjustment);
+			if (t.Get() > 7){ //Sanity check
+				break;
+			}
+		}
+	}
+	Halt();
+}
+
+void DriveBase::turnToAngle(double degree){
+	double c = getCurrentAngle();
+	double e;
+	Timer t;
+	t.Start();
+	e=c+degree;
+	if (degree>=0){
+		while(getCurrentAngle() < e){
+			driveTrain->TankDrive(0.4,-0.4);
+			if (t.Get() > 5){ //Sanity check - if turning takes more than 5 seconds there is something wrong.
+				break;
+			}
+		}
+	}
+	else {
+		while (getCurrentAngle() > e){
+			driveTrain->TankDrive(-0.4,0.4);
+			if (t.Get() > 5){ //Sanity check.
+				break;
+			}
+		}
+	}
+}
+
 void DriveBase::DriveStraight(double driveStraightSpeed){
 	driveTrain->TankDrive(driveStraightSpeed, driveStraightSpeed);
 }
