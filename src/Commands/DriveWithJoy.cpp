@@ -30,7 +30,8 @@ void DriveWithJoy::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoy::Execute() {
 
-	Robot::driveBase->JoyDrive(Robot::oi->getJoystick()->GetRawAxis(1), Robot::oi->getJoystick()->GetRawAxis(0));
+	Robot::driveBase->JoyDrive(Robot::oi->getJoystick()->GetRawAxis(1), Robot::oi->getJoystick()->GetRawAxis(5));
+
 
 //Robot::driveBase->driveTrain->TankDrive(Robot::oi->getJoystick()->GetRawAxis(1), Robot::oi->getJoystick()->GetRawAxis(2));
 

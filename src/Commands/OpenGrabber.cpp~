@@ -30,6 +30,7 @@ SetTimeout(1.0);
 // Called repeatedly when this Command is scheduled to run
 void OpenGrabber::Execute() {
 Robot::grabber->OpenGrabber();
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -40,6 +41,7 @@ bool OpenGrabber::IsFinished() {
 // Called once after isFinished returns true
 void OpenGrabber::End() {
 Robot::grabber->Stop();
+
 }
 
 // Called when another command which requires one or more of the same
