@@ -8,7 +8,8 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
+#include <iostream>
+#include <string>
 #include "ctre/Phoenix.h"
 
 
@@ -99,6 +100,7 @@ void DriveBase::driveSetDistance(double dist){
 	t.Start();
 	if (dist >= 0){
 		while (getInchesToObject() < destination){
+			std::cout 	<< "Inches to travel: " << getInchesToObject() << std::endl;
 			angleAdjustment = getCurrentAngle()-startAngle;
 			driveTrain->TankDrive(0.5-k*angleAdjustment,0.5+k*angleAdjustment);
 			if (t.Get() > 7 ){ //Sanity check ... if the command has taken more the 7 seconds something is seriously wrong.
@@ -108,6 +110,7 @@ void DriveBase::driveSetDistance(double dist){
 	}
 	else {
 		while (getInchesToObject() > destination){
+			std::cout 	<< "Inches to back: " << getInchesToObject() << std::endl;
 			angleAdjustment = getCurrentAngle()-startAngle;
 			driveTrain->TankDrive(0.5-k*angleAdjustment,-0.5+k*angleAdjustment);
 			if (t.Get() > 7){ //Sanity check
@@ -120,6 +123,9 @@ void DriveBase::driveSetDistance(double dist){
 
 void DriveBase::turnToAngle(double degree){
 	double c = getCurrentAngle();
+
+	std::cout 	<< "Current Angle is: " << c << std::endl;
+
 	double e;
 	Timer t;
 	t.Start();
@@ -154,7 +160,7 @@ void DriveBase::Halt(){
 		driveTrain->TankDrive(0.0,0.0);
 }
 void DriveBase::JoyDrive(double myX, double myY){
-	driveTrain->ArcadeDrive(myX, myY);
-	//driveTrain->TankDrive(myX,myY);
+	//driveTrain->ArcadeDrive(myX, myY);
+	driveTrain->TankDrive(myX,myY);
 }
 

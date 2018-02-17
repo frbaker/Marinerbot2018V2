@@ -37,6 +37,7 @@ public:
 
 void ClimbUp();
 void ClimbDown();
+void SwingUP();
 void ClimbStop();
 };
 

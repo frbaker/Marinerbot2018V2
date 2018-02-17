@@ -154,7 +154,7 @@ void DriveBase::Halt(){
 		driveTrain->TankDrive(0.0,0.0);
 }
 void DriveBase::JoyDrive(double myX, double myY){
-	driveTrain->ArcadeDrive(myX, myY);
-	//driveTrain->TankDrive(myX,myY);
+	//driveTrain->ArcadeDrive(myX, myY);
+	driveTrain->TankDrive(myX,myY);
 }
 
