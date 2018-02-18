@@ -24,31 +24,31 @@ ElevatorJoyControl::ElevatorJoyControl(): frc::Command() {
 
 // Called just before this Command runs the first time
 void ElevatorJoyControl::Initialize() {
-	SetTimeout(.03);
+	SetTimeout(1);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorJoyControl::Execute() {
 	double joyVal = Robot::oi->getJoystick2()->GetRawAxis(1);
-	int topElevatorLimit = 1000;
+	int topElevatorLimit = 3000;
 	int bottomElevatorLimit = 280;
 
-	if (Robot::elevator->GetElPosition() > topElevatorLimit && joyVal < 0){
-			End();
-		//joyVal = 0; // can't go up any higher
+	/*if (Robot::elevator->GetElPosition() > topElevatorLimit && joyVal < 0){
+			//End();
+		joyVal = 0; // can't go up any higher
 	}
 	else if (Robot::elevator->GetElPosition() < bottomElevatorLimit && joyVal > 0){
-		End();
-		//joyVal = 0; // can't go up any lower
+		//End();
+		joyVal = 0; // can't go up any lower
 	}
-	else{
+	else{*/
 		if (joyVal >.1 || joyVal < -.1){ //deadzone
-			Robot::elevator->TakeJoy(joyVal*0.45); //limiting the speed to 45% of joy value
+			Robot::elevator->TakeJoy(joyVal*0.75); //limiting the speed to 45% of joy value
 		}
 		else {
 			End();
 		}
-	}
+	//S}
 
 }
 
@@ -57,7 +57,7 @@ bool ElevatorJoyControl::IsFinished() {
 	/*if (Robot::oi->getJoystick2()->GetRawButton(5) ){
 			return true;
 		}*/
-	return IsTimedOut();
+	return false;
 }
 
 // Called once after isFinished returns true
@@ -68,5 +68,5 @@ void ElevatorJoyControl::End() {
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void ElevatorJoyControl::Interrupted() {
-	End();
+	//End();
 }
