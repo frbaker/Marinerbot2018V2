@@ -68,6 +68,7 @@ void Elevator::LowerElevator(){
 	elevatorTalon->Set(-1.0);
 }
 void Elevator::ElevatorStop(){
+
 	//elevatorTalon->SetNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
 	elevatorTalon->Set(0);
 	//elevatorTalon->StopMotor();

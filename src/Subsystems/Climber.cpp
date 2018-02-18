@@ -55,10 +55,10 @@ void Climber::ClimbUp(){
 climberSpark->Set(-1.0);
 }
 void Climber::ClimbDown(){
-	climberSpark->Set(0.3);
+	climberSpark->Set(0.4);
 }
 void Climber::SwingUP(){
-	climberSpark->Set(-.35);
+	climberSpark->Set(-.65);
 }
 void Climber::ClimbStop(){
 	climberSpark->StopMotor();
