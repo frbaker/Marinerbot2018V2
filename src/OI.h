@@ -37,12 +37,16 @@ private:
 	
 	
 	
+	
+	
 	std::shared_ptr<frc::Joystick> joystick2;
+	std::shared_ptr<frc::JoystickButton> haltElevator;
 	std::shared_ptr<frc::JoystickButton> actuateElevator;
 	std::shared_ptr<frc::JoystickButton> actuateElbow;
 	std::shared_ptr<frc::JoystickButton> openGrabber2;
 	std::shared_ptr<frc::JoystickButton> closeGrabber1;
 	std::shared_ptr<frc::Joystick> joystick;
+	std::shared_ptr<frc::JoystickButton> printFeedData;
 	std::shared_ptr<frc::JoystickButton> swingClimberButton3;
 	std::shared_ptr<frc::JoystickButton> upShift6;
 	std::shared_ptr<frc::JoystickButton> downShift5;
