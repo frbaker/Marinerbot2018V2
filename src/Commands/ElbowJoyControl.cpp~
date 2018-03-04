@@ -34,7 +34,7 @@ void ElbowJoyControl::Execute() {
 
 
 	if (joyVal >.1 || joyVal < -.1){ //deadzone
-		Robot::elbow->TakeJoy(joyVal*.45);
+		Robot::elbow->TakeJoy(joyVal);
 	}
 	else {
 		End();

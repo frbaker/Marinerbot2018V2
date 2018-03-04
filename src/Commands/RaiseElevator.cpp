@@ -29,6 +29,7 @@ void RaiseElevator::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void RaiseElevator::Execute() {
+	Robot::elBrake->BrakeOff();
 	Robot::elevator->RaiseElevator();
 }
 
@@ -39,6 +40,7 @@ bool RaiseElevator::IsFinished() {
 
 // Called once after isFinished returns true
 void RaiseElevator::End() {
+	Robot::elBrake->BrakeOn();
 	Robot::elevator->ElevatorStop();
 }
 

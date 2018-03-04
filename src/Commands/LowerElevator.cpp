@@ -29,6 +29,7 @@ void LowerElevator::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void LowerElevator::Execute() {
+	Robot::elBrake->BrakeOff();
 Robot::elevator->LowerElevator();
 }
 
@@ -39,6 +40,7 @@ bool LowerElevator::IsFinished() {
 
 // Called once after isFinished returns true
 void LowerElevator::End() {
+	Robot::elBrake->BrakeOn();
 Robot::elevator->ElevatorStop();
 }
 

@@ -24,31 +24,34 @@ ElevatorJoyControl::ElevatorJoyControl(): frc::Command() {
 
 // Called just before this Command runs the first time
 void ElevatorJoyControl::Initialize() {
+	Robot::elBrake->BrakeOff();
 	SetTimeout(1);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorJoyControl::Execute() {
-	double joyVal = Robot::oi->getJoystick2()->GetRawAxis(1);
-	int topElevatorLimit = 3000;
-	int bottomElevatorLimit = 280;
 
-	/*if (Robot::elevator->GetElPosition() > topElevatorLimit && joyVal < 0){
-			//End();
-		joyVal = 0; // can't go up any higher
+	double joyVal = Robot::oi->getJoystick2()->GetRawAxis(1);
+	int topElevatorLimit = 3600;
+	int bottomElevatorLimit = 10;
+
+	if (Robot::elevator->GetElPosition() > topElevatorLimit && joyVal < 0){
+		End();
+		//joyVal = 0; // can't go up any higher
 	}
 	else if (Robot::elevator->GetElPosition() < bottomElevatorLimit && joyVal > 0){
-		//End();
-		joyVal = 0; // can't go up any lower
+		End();
+		//joyVal = 0; // can't go up any lower (this may stop from smashing down)
 	}
-	else{*/
+	else{
 		if (joyVal >.1 || joyVal < -.1){ //deadzone
+			if (joyVal > .25){joyVal = .25;}
 			Robot::elevator->TakeJoy(joyVal*0.75); //limiting the speed to 45% of joy value
 		}
 		else {
 			End();
 		}
-	//S}
+	}
 
 }
 
