@@ -58,6 +58,7 @@ public:
 	double getInchesToObject();
 	void driveSetDistance(double);
 	void turnToAngle(double);
+	void PrintEncoderSpeed();
 };
 
 #endif

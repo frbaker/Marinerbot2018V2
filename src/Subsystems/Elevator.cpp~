@@ -9,8 +9,8 @@
 // it from being updated in the future.
 
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 #include "ctre/Phoenix.h"
 #include "Elevator.h"
 #include "../RobotMap.h"
@@ -39,6 +39,13 @@ void Elevator::InitDefaultCommand() {
 
 	elevatorTalon->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);
 
+	//Create a control Loop
+	elevatorTalon->SetNeutralMode(NeutralMode::Brake);
+	elevatorTalon->Config_kP(0,2.0,10);
+	elevatorTalon->Config_kI(0,0.0,10);
+	elevatorTalon->Config_kD(0,0.0,10);
+	elevatorTalon->Config_kF(0,0.0,10);
+
 }
 
 void Elevator::Periodic() {
@@ -52,7 +59,7 @@ void Elevator::Periodic() {
 
 int Elevator::GetElPosition(){
 	int elevatorEncoderPosition = elevatorTalon->GetSelectedSensorPosition(0);
-	std::cout 	<< "Elevator encoder position is: " << elevatorEncoderPosition << std::endl;
+	//std::cout 	<< "Elevator encoder position is: " << elevatorEncoderPosition << std::endl;
 	return elevatorEncoderPosition;
 }
 
@@ -68,9 +75,12 @@ void Elevator::LowerElevator(){
 	elevatorTalon->Set(-1.0);
 }
 void Elevator::ElevatorStop(){
-	//elevatorTalon->SetNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
-	elevatorTalon->Set(0);
-	//elevatorTalon->StopMotor();
+	//Stops and holds in place
+	//int elpos = GetElPosition();
+	//elevatorTalon->Set(ControlMode::Position,elpos);
+
+	//elevatorTalon->Set(0);
+elevatorTalon->StopMotor();
 }
 void Elevator::TakeJoy(double joyValue){
 	elevatorTalon->Set(joyValue);

@@ -62,13 +62,36 @@ void DriveBase::InitDefaultCommand() {
 	driveTrainRightTalon->SetInverted(true);
 	driveTrainRightTalonSlave->SetInverted(true);
 
-	driveTrainLeftTalon->SetSensorPhase(true);
-	driveTrainRightTalon->SetSensorPhase(true);
+	//driveTrainLeftTalon->SetSensorPhase(true);
+	driveTrainRightTalon->SetSensorPhase(true); //set to true multiplies result by -1 to reverse the reading
+
+	//ahrs = new AHRS(I2C::kOnboard, 0); //to use I2C
+	ahrs = new AHRS(SerialPort::kUSB1);
+
+
 }
 
 void DriveBase::Periodic() {
-    // Put code here to be run every loop
 
+    // Put code here to be run every loop
+	//std::cout 	<< "left speed is : " << leftspeed << std::endl;
+	//std::cout 	<< "right speed is : " << rightspeed << std::endl;
+}
+
+void DriveBase::PrintEncoderSpeed(){
+	int leftpos = driveTrainLeftTalon->GetSelectedSensorPosition(0);
+	int rightpos = driveTrainRightTalon->GetSelectedSensorPosition(1);
+	int gyroangle = ahrs->GetAngle();
+	double frontultrasonic = getInchesToObject();
+	double backultrasonic = ultrasonicRight->GetAverageVoltage();
+	int elpos = Robot::elevator->GetElPosition();
+
+	std::cout 	<< "left pos is : " << leftpos << std::endl;
+	std::cout 	<< "right pos is : " << rightpos << std::endl;
+	std::cout 	<< "gyro angle is : " << gyroangle << std::endl;
+	std::cout 	<< "front ultrasonic distance : " << frontultrasonic << std::endl;
+	std::cout 	<< "back ultrasonic voltage : " << backultrasonic << std::endl;
+	std::cout 	<< "elevator position : " << elpos << std::endl;
 }
 
 
@@ -100,7 +123,7 @@ void DriveBase::driveSetDistance(double dist){
 	t.Start();
 	if (dist >= 0){
 		while (getInchesToObject() < destination){
-			std::cout 	<< "Inches to travel: " << getInchesToObject() << std::endl;
+			//std::cout 	<< "Inches to travel: " << getInchesToObject() << std::endl;
 			angleAdjustment = getCurrentAngle()-startAngle;
 			driveTrain->TankDrive(0.5-k*angleAdjustment,0.5+k*angleAdjustment);
 			if (t.Get() > 7 ){ //Sanity check ... if the command has taken more the 7 seconds something is seriously wrong.
@@ -110,7 +133,7 @@ void DriveBase::driveSetDistance(double dist){
 	}
 	else {
 		while (getInchesToObject() > destination){
-			std::cout 	<< "Inches to back: " << getInchesToObject() << std::endl;
+			//std::cout 	<< "Inches to back: " << getInchesToObject() << std::endl;
 			angleAdjustment = getCurrentAngle()-startAngle;
 			driveTrain->TankDrive(0.5-k*angleAdjustment,-0.5+k*angleAdjustment);
 			if (t.Get() > 7){ //Sanity check
@@ -124,7 +147,7 @@ void DriveBase::driveSetDistance(double dist){
 void DriveBase::turnToAngle(double degree){
 	double c = getCurrentAngle();
 
-	std::cout 	<< "Current Angle is: " << c << std::endl;
+	//std::cout 	<< "Current Angle is: " << c << std::endl;
 
 	double e;
 	Timer t;
