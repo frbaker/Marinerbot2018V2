@@ -24,13 +24,27 @@ RaiseElevator::RaiseElevator(): frc::Command() {
 
 // Called just before this Command runs the first time
 void RaiseElevator::Initialize() {
-	SetTimeout(1);
+	SetTimeout(2);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void RaiseElevator::Execute() {
 	Robot::elBrake->BrakeOff();
-	Robot::elevator->RaiseElevator();
+	int topElevatorLimit = 3600;
+	int bottomElevatorLimit = -3;
+
+	if (Robot::elevator->GetElPosition() > topElevatorLimit){
+		End();
+		//joyVal = 0; // can't go up any higher
+	}
+	/*else if (Robot::elevator->GetElPosition() < bottomElevatorLimit){
+		End();
+		//joyVal = 0; // can't go up any lower (this may stop from smashing down)
+	}*/
+	else{
+		Robot::elevator->TakeJoy(0.75); //limiting the speed to 45% of joy value
+	}
+	End();
 }
 
 // Make this return true when this Command no longer needs to run execute()

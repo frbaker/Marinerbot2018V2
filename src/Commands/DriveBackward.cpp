@@ -12,14 +12,23 @@
 #include "DriveBackward.h"
 
 
-DriveBackward::DriveBackward(): frc::Command() {
-        // Use requires() here to declare subsystem dependencies
+DriveBackward::DriveBackward(double dist): frc::Command() {
+	m_dist = dist;
+	// Use requires() here to declare subsystem dependencies
     // eg. requires(Robot::chassis.get());
+	Requires(Robot::driveBase.get());
 }
 
 // Called just before this Command runs the first time
 void DriveBackward::Initialize() {
+	double startInches = Robot::driveBase->getCurrentEncoderPos();
+
+	double endInches = startInches - m_dist;
+
+	//Robot::driveBase->driveSetDistance(m_dist);
+	Robot::driveBase->driveBackSetDistance(endInches);
 	SetTimeout(1);
+
 }
 
 // Called repeatedly when this Command is scheduled to run

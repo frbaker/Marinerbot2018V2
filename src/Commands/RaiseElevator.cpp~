@@ -29,7 +29,22 @@ void RaiseElevator::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void RaiseElevator::Execute() {
-	Robot::elevator->RaiseElevator();
+	Robot::elBrake->BrakeOff();
+	int topElevatorLimit = 3600;
+	int bottomElevatorLimit = 10;
+
+	if (Robot::elevator->GetElPosition() > topElevatorLimit){
+		End();
+		//joyVal = 0; // can't go up any higher
+	}
+	else if (Robot::elevator->GetElPosition() < bottomElevatorLimit){
+		End();
+		//joyVal = 0; // can't go up any lower (this may stop from smashing down)
+	}
+	else{
+		Robot::elevator->TakeJoy(0.75); //limiting the speed to 45% of joy value
+	}
+	End();
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -39,6 +54,7 @@ bool RaiseElevator::IsFinished() {
 
 // Called once after isFinished returns true
 void RaiseElevator::End() {
+	Robot::elBrake->BrakeOn();
 	Robot::elevator->ElevatorStop();
 }
 

@@ -23,7 +23,7 @@
  */
 class DriveBackward: public frc::Command {
 public:
-	DriveBackward();
+	DriveBackward( double dist);
 
 
 	void Initialize() override;
@@ -33,6 +33,7 @@ public:
 	void Interrupted() override;
 
 private:
+	double m_dist;
 };
 
 #endif

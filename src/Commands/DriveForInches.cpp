@@ -21,12 +21,18 @@ DriveForInches::DriveForInches(double dist): frc::Command() {
 
 // Called just before this Command runs the first time
 void DriveForInches::Initialize() {
-	SetTimeout(1);
+	double startInches = Robot::driveBase->getCurrentEncoderPos();
+
+	double endInches = startInches + m_dist;
+
+	//Robot::driveBase->driveSetDistance(m_dist);
+	Robot::driveBase->driveSetDistance(endInches);
+	SetTimeout(6);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveForInches::Execute() {
-	Robot::driveBase->driveSetDistance(m_dist);
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
