@@ -36,17 +36,17 @@ void Elbow::Periodic() {
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 void Elbow::ElbowUp(){
-/*	if(elbowTopLimit->Get() == false){
-		elbowSpark->Set(1.0);
+	if(elbowTopLimit->Get() == false){
+		elbowSpark->Set(.65);
 	}
-	*/
+
 }
 
 void Elbow::ElbowDown(){
-/*	if(elbowBottomLimit->Get() == false){
-		elbowSpark->Set(-1.0);
+	if(elbowBottomLimit->Get() == false){
+		elbowSpark->Set(-.65);
 	}
-	*/
+
 }
 
 void Elbow::TakeJoy(double joyValue){

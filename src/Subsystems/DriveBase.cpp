@@ -78,7 +78,8 @@ void DriveBase::Periodic() {
 }
 
 void DriveBase::PrintEncoderSpeed(){
-	int leftpos = driveTrainLeftTalon->GetSelectedSensorPosition(0);
+	//int leftpos = driveTrainLeftTalon->GetSelectedSensorPosition(0);
+	int distance = getCurrentEncoderPos();
 	double dir = getCurrentAngle();
 	//int rightpos = driveTrainRightTalon->GetSelectedSensorPosition(1);
 	//int gyroangle = ahrs->GetAngle();
@@ -86,7 +87,7 @@ void DriveBase::PrintEncoderSpeed(){
 	//double backultrasonic = ultrasonicRight->GetAverageVoltage();
 	int elpos = Robot::elevator->GetElPosition();
 
-	std::cout 	<< "left pos is : " << leftpos << std::endl;
+	std::cout 	<< "left distance is : " << distance << std::endl;
 
 	std::cout 	<< "dir : " << dir << std::endl;
 	//std::cout 	<< "gyro angle is : " << gyroangle << std::endl;
@@ -100,7 +101,8 @@ void DriveBase::PrintEncoderSpeed(){
 // here. Call these from Commands.
 void DriveBase::resetAhrs(){
 	//ahrs->ZeroYaw();
-	//_pidgey->SetFusedHeading(0.0, 10); /* reset heading, angle measurement wraps at plus/minus 23,040 degrees (64 rotations) */
+	//piggy->SetFusedHeading(0.0, 10); /* reset heading, angle measurement wraps at plus/minus 23,040 degrees (64 rotations) */
+
 }
 double DriveBase::getCurrentAngle(){
     PigeonIMU * piggy;
@@ -108,6 +110,12 @@ double DriveBase::getCurrentAngle(){
    //piggy->GetFusedHeading();
     return piggy->GetFusedHeading();
     //return 0.0;
+}
+
+double DriveBase::getCurrentEncoderPos(){
+	double encoderReading = driveTrainLeftTalon->GetSelectedSensorPosition(0);
+	return encoderReading / 1831.645; //converts the reading to inches
+	//return driveTrainLeftTalon->GetSelectedSensorPosition(0);
 }
 
 double DriveBase::getInchesToObject(){
@@ -121,30 +129,39 @@ double DriveBase::getInchesToObject(){
 
 
 void DriveBase::driveSetDistance(double dist){
-	double destination = getInchesToObject()+dist;
+	double destination = dist;
 	Timer t;
 	double startAngle = getCurrentAngle();
 	const double k = 0.01;
 	double angleAdjustment;
 	t.Start();
-	if (dist >= 0){
-		while (getInchesToObject() < destination){
-			//std::cout 	<< "Inches to travel: " << getInchesToObject() << std::endl;
-			angleAdjustment = getCurrentAngle()-startAngle;
-			driveTrain->TankDrive(0.5-k*angleAdjustment,0.5+k*angleAdjustment);
-			if (t.Get() > 7 ){ //Sanity check ... if the command has taken more the 7 seconds something is seriously wrong.
-				break;
-			}
+
+	while (getCurrentEncoderPos() < destination){
+		//angleAdjustment = getCurrentAngle()-startAngle;
+		//driveTrain->TankDrive(0.80-k*angleAdjustment,0.80+k*angleAdjustment);
+
+		driveTrain->TankDrive(-0.80,-0.80);
+		if (t.Get() > 10 ){ //Sanity check ... if the command has taken more the 7 seconds something is seriously wrong.
+			break;
 		}
 	}
-	else {
-		while (getInchesToObject() > destination){
-			//std::cout 	<< "Inches to back: " << getInchesToObject() << std::endl;
-			angleAdjustment = getCurrentAngle()-startAngle;
-			driveTrain->TankDrive(0.5-k*angleAdjustment,-0.5+k*angleAdjustment);
-			if (t.Get() > 7){ //Sanity check
-				break;
-			}
+	Halt();
+}
+
+
+void DriveBase::driveBackSetDistance(double dist){
+	double destination = dist;
+	Timer t;
+	double startAngle = getCurrentAngle();
+	const double k = 0.01;
+	double angleAdjustment;
+	t.Start();
+
+	while (getCurrentEncoderPos() < destination){
+		angleAdjustment = getCurrentAngle()-startAngle;
+		driveTrain->TankDrive(-0.7-k*angleAdjustment,-0.7+k*angleAdjustment);
+		if (t.Get() > 7 ){ //Sanity check ... if the command has taken more the 7 seconds something is seriously wrong.
+			break;
 		}
 	}
 	Halt();
@@ -161,7 +178,7 @@ void DriveBase::turnToAngle(double degree){
 	e=c+degree;
 	if (degree>=0){
 		while(getCurrentAngle() < e){
-			driveTrain->TankDrive(0.4,-0.4);
+			driveTrain->TankDrive(0.6,-0.6);
 			if (t.Get() > 5){ //Sanity check - if turning takes more than 5 seconds there is something wrong.
 				break;
 			}
@@ -169,7 +186,7 @@ void DriveBase::turnToAngle(double degree){
 	}
 	else {
 		while (getCurrentAngle() > e){
-			driveTrain->TankDrive(-0.4,0.4);
+			driveTrain->TankDrive(-0.6,0.6);
 			if (t.Get() > 5){ //Sanity check.
 				break;
 			}

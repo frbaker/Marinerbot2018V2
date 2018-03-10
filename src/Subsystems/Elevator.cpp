@@ -60,13 +60,13 @@ void Elevator::SetElPositionToZero(){
 void Elevator::RaiseElevator(){
 
 
-	elevatorTalon->Set(1.0);
+	elevatorTalon->Set(0.8);
 
 }
 void Elevator::LowerElevator(){
 
 
-	elevatorTalon->Set(-1.0);
+	elevatorTalon->Set(-0.2);
 }
 void Elevator::ElevatorStop(){
 	//Stops and holds in place

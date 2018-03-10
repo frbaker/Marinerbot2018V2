@@ -41,6 +41,7 @@ public:
 	void Periodic() override;
 	void resetAhrs();
 	double getCurrentAngle();
+	double getCurrentEncoderPos();
 	double distanceToLeftObject;
 	void DriveStraight(double);
 	double driveStraightSpeed;
@@ -52,6 +53,7 @@ public:
 	void JoyDrive(double, double);
 	double getInchesToObject();
 	void driveSetDistance(double);
+	void driveBackSetDistance(double);
 	void turnToAngle(double);
 	void PrintEncoderSpeed();
 	//PigeonIMU piggy;
