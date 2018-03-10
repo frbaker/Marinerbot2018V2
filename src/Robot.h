@@ -19,6 +19,11 @@
 
 #include "Commands/AutonomousCommand.h"
 #include "Commands/AutoRoutine1.h"
+#include "Commands/AutoPos1LL.h"
+#include "Commands/AutoPos1RL.h"
+#include "Commands/AutoPos1RR.h"
+#include "Commands/AutoPos2L2.h"
+#include "Commands/AutoPos2R2.h"
 #include "Subsystems/Climber.h"
 #include "Subsystems/DriveBase.h"
 #include "Subsystems/ElBrake.h"

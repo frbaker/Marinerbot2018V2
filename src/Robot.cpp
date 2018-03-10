@@ -41,6 +41,7 @@ void Robot::RobotInit() {
 	// Add commands to Autonomous Sendable Chooser
 
 	chooser.AddObject("AutoRoutine1", new AutoRoutine1());
+	//chooser.AddObject("AutoPos1LL", new AutoPos1LL());
 
 	chooser.AddDefault("Autonomous Command", new AutonomousCommand());
 
@@ -72,6 +73,22 @@ void Robot::DisabledPeriodic() {
 	 * The other alliance switch orientation will be accessible as gameData[2]
 	 *
 	 * */
+
+
+
+
+
+
+
+
+}
+
+void Robot::AutonomousInit() {
+	//autonomousCommand = chooser.GetSelected();
+	//autonomousCommand = new AutoPos1LL();
+
+	autonomousCommand = new AutoRoutine1(); //This is our default and will run if nothing overwrites it
+
 	std::string gameData; // 3 digit array LRL, LLL, RRR, RLR determining switch locations
 	std::string allianceColor; //kRed, kBlue or kInvalid
 	int startLocation; // 1, 2 or 3 (0 for invalid)
@@ -80,198 +97,83 @@ void Robot::DisabledPeriodic() {
 	allianceColor = frc::DriverStation::GetInstance().GetAlliance();
 	gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
 
-	//The auto line is 120" from the start wall
+	int retries = 100;
 
-	//The switch is 48 and center of the switch is 168 from the start wall so...
-	//The near edge of the switch is 144 from the start wall
-	//The far edge of the switch is 192 from the start wall
-
-	//The field is 648 long with the 48 wide scale centered within
-	//The center of the scale is 324 from the start wall
-	//The near edge of the scale is 300 from the start wall
-	//The far edge of the scale is 348 from the start wall
-
-	//The field is 324 wide (162 half way point)
-
-
-	//The robot is about 33 long (so center of robot is aprox 16.5)
-	// and 28 wide (so center aprox 14)
-
-
-	//The switch is 85.25 to 121.25 from the side walls
-	//The scale is 71.57 to 107.57 from the side walls (plate center is 89.57)
-
-	//Position 1 is to the left as you are facing the field, with the Robot
-	//Placed facing straight forward with the left edge of the Robot aligned
-	//Where the start wall has an angle
+	while (gameData.length() <2 && retries >0){
+		retries--;
+		try{
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		}
+		catch (int e) {
+				//nothing
+		}
+		gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
+	}
 
 	if (startLocation == 1){
-		if(gameData.length() > 0){
-			if(gameData[0] == 'L'){
-				//if (gameData[1] == 'L'){ // we don't care where the scale is, go for the switch
-					//we are in position 1
-					//our switch and the scale are on the left
-
-					//to place on our switch, drive forward so the center of our
-					//robot is centered on the switch
-					//Drive Forward 151.5"
-
-					//turn 90 degrees to the right
-
-					//Raise Elevator
-
-					//after turning our front edge should be about 60.18 from the wall
-					//Drive forward 25"
-
-					//Open Claw
-
-					//Raise Elbow
-
-					// Back Up 12"
-
-				/*}
-				else{
-					//we are in position 1
-					//our switch is on the left and the scale is on the right
-				}*/
+			if(gameData.length() > 0){
+				if(gameData[0] == 'L'){
+				autonomousCommand = new AutoPos1LL();
 			}
 			else{
-				if (gameData[1] == 'L'){ //Lets go for the scale
-					//we are in position 1
-					//our switch is on the right and the scale is on the left
-
-					//to place on our scale, drive forward so the center of our
-					//robot is between the switch and the scale
-					//196-16.5+13+33 = 225.5 + 82
-					//Drive Forward 225.5
-
-					//turn 90 degrees to the right
-
-					//Drive forward 82
-
-					//turn 90 degrees to the left
-
-					//Drive forward 82
-
-					//Raise Elevator
-
-					//after turning our front edge should be about 60.18 from the wall
-					//Drive forward 11.39
-
-					//Open Claw
-
-					//Raise Elbow
-
-					// Back Up 12"
+				if (gameData[1] == 'L'){
+					autonomousCommand = new AutoPos1RL();
 				}
-				else{
-					//we are in position 1
-					//The switch and the scale are on the right
-
-					//Lets go for the scale
-					//to place on our scale, drive forward so the center of our
-					//robot is centered between the switch and the scale
-					//196-16.5+13+33 = 225.5 + 82
-					//Drive Forward 225.5
-
-					//turn 90 degrees to the right
-
-					//Drive forward 154.62
-
-					//turn 90 degrees to the left
-
-					//Drive forward 82
-
-					//Raise Elevator
-
-					//after turning our front edge should be about 60.18 from the wall
-					//Drive forward 11.39
-
-					//Open Claw
-
-					//Raise Elbow
-
-					// Back Up 12"
-
-
+				else {
+					autonomousCommand = new AutoPos1RR();
 				}
 			}
 		}
-
 	}
+
 	else if (startLocation == 2){
-		if(gameData.length() > 0){
-			if(gameData[0] == 'L'){
-				if (gameData[1] == 'L'){
-					//we are in position 2
-					//our switch and the scale are on the left
+			if(gameData.length() > 0){
+				if(gameData[0] == 'L'){
+
+
+					autonomousCommand = new AutoPos2L2();
 				}
-				else{
-					//we are in position 2
-					//our switch is on the left and the scale is on the right
-				}
-			}
-			else{
-				if (gameData[1] == 'L'){
-					//we are in position 2
-					//our switch is on the right and the scale is on the left
-				}
-				else{
-					//we are in position 2
-					//The switch and the scale are on the right
+				else {
+					autonomousCommand = new AutoPos2R2();
 				}
 			}
-		}
 	}
 	else if (startLocation == 3){
-		if(gameData.length() > 0){
-			if(gameData[0] == 'L'){
-				if (gameData[1] == 'L'){
-					//we are in position 3
-					//our switch and the scale are on the left
-				}
-				else{
-					//we are in position 3
-					//our switch is on the left and the scale is on the right
-				}
-			}
-			else{
-				if (gameData[1] == 'L'){
-					//we are in position 3
-					//our switch is on the right and the scale is on the left
-				}
-				else{
-					//we are in position 3
-					//The switch and the scale are on the right
-				}
-			}
-		}
+		//autonomousCommand = new AutoPos3();
+
+		//we got nothing for pos 3
 	}
 	else {
+		autonomousCommand = new AutoRoutine1();
 		//We don't know nothin = We can either do nothin, or do somethin
 	}
 
-
-
-
-}
-
-void Robot::AutonomousInit() {
-	//Robot::elevator->SetElPositionToZero(); //Set elevator starting position to 0
-	autonomousCommand = chooser.GetSelected();
+	//autonomousCommand = new AutoRoutine1();
 	if (autonomousCommand != nullptr)
 		autonomousCommand->Start();
 }
 
 void Robot::AutonomousPeriodic() {
+
+
+
+	/*if (!gameData){
+		gameData = GetGameData();
+	}*/
+
+
+
 	frc::Scheduler::GetInstance()->Run();
 }
+
+
 
 void Robot::TeleopInit() {
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to
 	// continue until interrupted by another command, remove
 	// these lines or comment it out.
+
 	if (autonomousCommand != nullptr)
 		autonomousCommand->Cancel();
 }
